@@ -5,20 +5,32 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.simberbest.dcs.entity.InformationPacket;
 import edu.simberbest.dcs.entity.InstructionPacket;
 import edu.simberbest.dcs.serviceImpl.InformationProcessingService;
 
 
+/**
+ * @author sbbpvi
+ * 
+ * Socket client to send instruction to raspberry pi
+ *
+ */
 public class InstructionClient {
 
-
-	public void socketConnection(InstructionPacket insPackt) {
+	private static final Logger Logger = LoggerFactory.getLogger(InstructionClient.class);
+	public String socketConnection(InstructionPacket insPackt) {
+		Logger.info("Enter InstructionClient||Client connection");
 		   String data = insPackt.toString();
 		   String mac= insPackt.getMacId();
 		   String Ip = null;
-		   for(String s : InformationProcessingService.inmformationMap.keySet()){
-			   if(s.contains(mac)){
-				  Ip= s.split("##")[0]; 
+		   String message=null;
+		   for(InformationPacket informationPacket : InformationProcessingService.inmformationMap.keySet()){
+			   if(informationPacket.getMacId().equals(mac)){
+				  Ip= informationPacket.getIpAddress(); 
 			   }
 		   }
 		   
@@ -30,18 +42,22 @@ public class InstructionClient {
 	         PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
 	         System.out.print("Sending string: '" + data + "'\n");
 	         out.print(data);
-	         out.close();
-	         skt.close();
+	      
+	        
 	        
 	         while (!in.ready()) {}
-	         System.out.println(in.readLine()); // Read one line and output it
-
+	         System.out.println(); // Read one line and output it 
+	         message=in.readLine();
 	         System.out.print("'\n");
 	         in.close();
+	         out.close();
+	         skt.close();
 	      }
 	      catch(Exception e) {
-	         System.out.print("Whoops! It didn't work!\n"+e.getMessage());
+	    	  Logger.error("Exception in sending Instruction packet", e);
+	        // System.out.print("Whoops!It didn't work!\n"+e.getMessage());
 	      }
+		return message;
 	   }
 	   
 }

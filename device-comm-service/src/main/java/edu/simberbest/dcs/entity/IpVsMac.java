@@ -3,6 +3,10 @@ package edu.simberbest.dcs.entity;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author sbbpvi
+ *  pojo used to contain the Ip and Mac address information from raspberry pi
+ */
 public class IpVsMac {
 
 	private String ipAddress;

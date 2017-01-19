@@ -1,5 +1,9 @@
 package edu.simberbest.dcs.entity;
 
+/**
+ * @author sbbpvi
+ * pojo used to contain message for rest call
+ */
 public class Message {
 
 	private String message;

@@ -1,5 +1,9 @@
 package edu.simberbest.dcs.exception;
 
+/**
+ * @author sbbpvi
+ * for holding and customized service layer exception
+ */
 public class ApplicationException extends Exception {
 
 	public ApplicationException() {

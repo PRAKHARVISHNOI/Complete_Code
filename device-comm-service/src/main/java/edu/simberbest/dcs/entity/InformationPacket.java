@@ -3,7 +3,10 @@ package edu.simberbest.dcs.entity;
 /**
  * @author sbbpvi
  *
+ * pojo used to contain the plug load information from raspberry pi
  */
+
+
 public class InformationPacket {
 
 	private String ipAddress;
@@ -12,22 +15,24 @@ public class InformationPacket {
 	private String power;
 	private String energy;
 	private String relay;
+	private String pwTimeStamp;
+	private String enTimeStamp;
+	private String rlyTimeStamp;
+	
+	
 	
 	@Override
 	public String toString() {
 		return "InformationPacket [ipAddress=" + ipAddress + ", macId=" + macId + ", timestamp=" + timestamp
-				+ ", power=" + power + ", energy=" + energy + ", relay=" + relay + "]";
+				+ ", power=" + power + ", energy=" + energy + ", relay=" + relay + ", pwTimeStamp=" + pwTimeStamp
+				+ ", enTimeStamp=" + enTimeStamp + ", rlyTimeStamp=" + rlyTimeStamp + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((energy == null) ? 0 : energy.hashCode());
 		result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
 		result = prime * result + ((macId == null) ? 0 : macId.hashCode());
-		result = prime * result + ((power == null) ? 0 : power.hashCode());
-		result = prime * result + ((relay == null) ? 0 : relay.hashCode());
-		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		return result;
 	}
 	@Override
@@ -39,11 +44,6 @@ public class InformationPacket {
 		if (getClass() != obj.getClass())
 			return false;
 		InformationPacket other = (InformationPacket) obj;
-		if (energy == null) {
-			if (other.energy != null)
-				return false;
-		} else if (!energy.equals(other.energy))
-			return false;
 		if (ipAddress == null) {
 			if (other.ipAddress != null)
 				return false;
@@ -54,22 +54,31 @@ public class InformationPacket {
 				return false;
 		} else if (!macId.equals(other.macId))
 			return false;
-		if (power == null) {
-			if (other.power != null)
-				return false;
-		} else if (!power.equals(other.power))
-			return false;
-		if (relay == null) {
-			if (other.relay != null)
-				return false;
-		} else if (!relay.equals(other.relay))
-			return false;
-		if (timestamp == null) {
-			if (other.timestamp != null)
-				return false;
-		} else if (!timestamp.equals(other.timestamp))
-			return false;
 		return true;
+	}
+	
+	public InformationPacket(String ipAddress, String macId) {
+		super();
+		this.ipAddress = ipAddress;
+		this.macId = macId;
+	}
+	public String getPwTimeStamp() {
+		return pwTimeStamp;
+	}
+	public void setPwTimeStamp(String pwTimeStamp) {
+		this.pwTimeStamp = pwTimeStamp;
+	}
+	public String getEnTimeStamp() {
+		return enTimeStamp;
+	}
+	public void setEnTimeStamp(String enTimeStamp) {
+		this.enTimeStamp = enTimeStamp;
+	}
+	public String getRlyTimeStamp() {
+		return rlyTimeStamp;
+	}
+	public void setRlyTimeStamp(String rlyTimeStamp) {
+		this.rlyTimeStamp = rlyTimeStamp;
 	}
 	public String getIpAddress() {
 		return ipAddress;
@@ -107,23 +116,9 @@ public class InformationPacket {
 	public void setRelay(String relay) {
 		this.relay = relay;
 	}
-	public InformationPacket(String ipAddress, String macId, String timestamp, String power, String energy,
-			String relay) {
-		super();
-		this.ipAddress = ipAddress;
-		this.macId = macId;
-		this.timestamp = timestamp;
-		this.power = power;
-		this.energy = energy;
-		this.relay = relay;
-	}
+	
 	public InformationPacket() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
 	
 }

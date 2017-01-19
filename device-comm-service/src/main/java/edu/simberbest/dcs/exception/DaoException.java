@@ -1,5 +1,11 @@
 package edu.simberbest.dcs.exception;
 
+/**
+ * @author sbbpvi
+ * 
+ * for holding and customized dao layer exception
+ *
+ */
 public class DaoException extends Exception {
 
 	public DaoException() {

@@ -1,7 +1,7 @@
 package edu.simberbest.dcs.entity;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
-
+@Deprecated
 public class Queue {
 
 	private ConcurrentLinkedQueue list;

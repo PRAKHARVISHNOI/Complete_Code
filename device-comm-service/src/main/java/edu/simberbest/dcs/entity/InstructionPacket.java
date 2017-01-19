@@ -1,17 +1,22 @@
 package edu.simberbest.dcs.entity;
 
+/**
+ * @author sbbpvi
+ *
+ *pojo used to contain instruction from system
+ */
 public class InstructionPacket {
 	private String macId;
 	private String instruction;
-	//c)	/control/all/on-off/
+
 	@Override
 	public String toString() {
 		return "/control/" + macId + "/" + instruction ;
 	}
 	public InstructionPacket() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
+	
 	public InstructionPacket(String macId, String instruction) {
 		super();
 		this.macId = macId;
@@ -58,12 +63,5 @@ public class InstructionPacket {
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

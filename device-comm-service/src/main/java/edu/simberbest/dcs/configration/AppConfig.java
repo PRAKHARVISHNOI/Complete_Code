@@ -8,9 +8,14 @@ import edu.simberbest.dcs.daoImpl.DcsInformationDaoImpl;
 import edu.simberbest.dcs.service.DcsInformationService;
 import edu.simberbest.dcs.serviceImpl.DcsInformationServiceImpl;
 
+/**
+ * @author sbbpvi
+ *
+ */
 @Configuration
 public class AppConfig {
 
+	
 	@Bean
 	    public DcsInformationService dataService() {
 	        return new DcsInformationServiceImpl();
