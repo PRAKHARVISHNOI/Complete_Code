@@ -22,7 +22,7 @@
 
 	</appender>
 
-	<logger name="edu.simberbest.dcs" level="debug"
+	<logger name="edu.simberbest.dcs" level="info"
 		additivity="false">
 		<appender-ref ref="FILE-AUDIT" />
 	</logger>

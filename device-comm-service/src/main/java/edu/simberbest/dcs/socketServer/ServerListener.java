@@ -13,7 +13,8 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.constants.CommunicationServiceConstants;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 import edu.simberbest.dcs.entity.IpVsMac;
 import edu.simberbest.dcs.socketClient.InstructionClient;
 
@@ -28,18 +29,19 @@ public class ServerListener {
 	public static volatile ConcurrentLinkedQueue<Object> informationQueue = new ConcurrentLinkedQueue<>();
 
 	public void startServer() {
+		//CommunicationServiceConstants.loadProperties();
 		Logger.info("Enter ServerListener||Running Socket Server");
-		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(20);
+		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(CommunicationServiceConstants.SOCKET_SERVER_POOL);
 
 		Runnable serverTask = () -> {
 			try {
-				ServerSocket serverSocket = new ServerSocket(8000);
+				ServerSocket serverSocket = new ServerSocket(CommunicationServiceConstants.SERVER_PORT);
 				System.out.println("Waiting for clients to connect...");
 				while (true) {
 					Socket clientSocket = serverSocket.accept();
 
 					Runnable gettingClient = () -> {
-						connectToClient(clientSocket);
+					connectToClient(clientSocket);
 					};
 
 					clientProcessingPool.submit(gettingClient);
@@ -66,7 +68,7 @@ public class ServerListener {
 			while ((red = clientSocket.getInputStream().read(buffer)) > -1) {
 				redData = new byte[red];
 				System.arraycopy(buffer, 0, redData, 0, red);
-				redDataText = new String(redData, "UTF-8"); // assumption
+				redDataText = new String(redData, CommunicationServiceConstants.UTF); // assumption
 															// that client
 															// sends data
 															// UTF-8 encoded
@@ -76,51 +78,45 @@ public class ServerListener {
 			System.out.println("Data From Client :" + clientData.toString());
 
 			String str = clientData.toString();
-			/*
-			 * 1) For sending info to the main application (plugload data
-			 * update) Raspberry/IP_address/Plugwise/Mac_Id/Timestamp/
-			 * TimestampValue/Power/PowerValue/Energy/EnergyValue/Relay/
-			 * RelayValue 2) For sending node list for particular raspberry
-			 * Raspberry/IP_address/Plugwise/Mac_Id1/ Mac_Id2/ Mac_Id3/
-			 * Mac_Id4…..
-			 */
+			// Segregating data according to packet type
 
-			if (str.contains("Timestamp")) {
+			if (str.contains(CommunicationServiceConstants.TIMESTAMP)) {
 				String[] infoPckts = str.split("\\/");
-				InformationPacket infoPckt = new InformationPacket();
+				PlugLoadInformationPacket infoPckt = new PlugLoadInformationPacket();
 				for (int i = 0; i < infoPckts.length; i++) {
 
-					if (infoPckts[i].equals("Raspberry")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.RESPBERRY)) {
 						infoPckt.setIpAddress(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Plugwise")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.PLUGWISE)) {
 						infoPckt.setMacId(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Timestamp")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.TIMESTAMP)) {
 						infoPckt.setTimestamp(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Power")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.POWER)) {
 						infoPckt.setPower(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Energy")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.ENERGY)) {
 						infoPckt.setEnergy(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Relay")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.RELAY)) {
 						infoPckt.setRelay(infoPckts[i + 1]);
 					}
 				}
 				if (infoPckt.getMacId() != null) {
 					informationQueue.add(infoPckt);
+					System.out.println(informationQueue);
 				}
 			} else {
 				String[] infoPckts = str.split("\\/");
 				IpVsMac infoPckt = new IpVsMac();
 				for (int i = 0; i < infoPckts.length; i++) {
 
-					if (infoPckts[i].equals("Raspberry")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.RESPBERRY)) {
 						infoPckt.setIpAddress(infoPckts[i + 1]);
 					}
-					if (infoPckts[i].equals("Plugwise")) {
+					if (infoPckts[i].equals(CommunicationServiceConstants.PLUGWISE)) {
 						List<String> macIds = new LinkedList<>();
 						for (int j = i + 1; j < infoPckts.length; j++) {
 							macIds.add(infoPckts[j]);

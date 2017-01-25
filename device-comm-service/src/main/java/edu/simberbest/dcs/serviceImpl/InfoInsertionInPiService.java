@@ -3,7 +3,7 @@ package edu.simberbest.dcs.serviceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 import edu.simberbest.dcs.exception.ApplicationException;
 
 /**
@@ -14,12 +14,12 @@ public class InfoInsertionInPiService implements Runnable {
 
 	private static final Logger Logger = LoggerFactory.getLogger(InfoInsertionInPiService.class);
 	
-	private InformationPacket informationPacket;
+	private PlugLoadInformationPacket informationPacket;
 
 	/**
 	 * @param informationPacket
 	 */
-	public InfoInsertionInPiService(InformationPacket informationPacket) {
+	public InfoInsertionInPiService(PlugLoadInformationPacket informationPacket) {
 		super();
 		this.informationPacket = informationPacket;
 	}
@@ -35,7 +35,7 @@ public class InfoInsertionInPiService implements Runnable {
 		try {
 			new DcsInformationServiceImpl().insertCurrentFeedToPie(informationPacket);
 		} catch (ApplicationException e) {
-			Logger.error("Exception in Insertion to Pi database", e);
+	    Logger.error("Exception in Insertion to Pi database", e);
 		}
 		Logger.info("Exit InfoInsertionInPiService");
 	}

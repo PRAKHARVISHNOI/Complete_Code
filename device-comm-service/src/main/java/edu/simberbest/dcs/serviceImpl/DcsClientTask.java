@@ -5,8 +5,8 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.simberbest.dcs.controller.DataController;
-import edu.simberbest.dcs.entity.InstructionPacket;
+import edu.simberbest.dcs.controller.DcsController;
+import edu.simberbest.dcs.entity.PlugLoadInstructionPacket;
 import edu.simberbest.dcs.socketClient.InstructionClient;
 
 /**
@@ -16,11 +16,11 @@ import edu.simberbest.dcs.socketClient.InstructionClient;
  */
 public class DcsClientTask implements 	Callable<String>{
 	private static final Logger Logger = LoggerFactory.getLogger(DcsClientTask.class);
-	private InstructionPacket instructionPacket;
+	private PlugLoadInstructionPacket instructionPacket;
 	/**
 	 * @param insPckt
 	 */
-	public DcsClientTask(InstructionPacket instructionPacket) {
+	public DcsClientTask(PlugLoadInstructionPacket instructionPacket) {
 		super();
 		this.instructionPacket = instructionPacket;
 	}
@@ -28,7 +28,7 @@ public class DcsClientTask implements 	Callable<String>{
 	@Override
 	public String call() throws Exception {
 		Logger.info("Enter DcsClientTask Connecting Socket");
-		InstructionPacket packet= instructionPacket;
+		PlugLoadInstructionPacket packet= instructionPacket;
 		String message="";
 	    InstructionClient instructionClient= new InstructionClient();
 	    message= instructionClient.socketConnection(packet);

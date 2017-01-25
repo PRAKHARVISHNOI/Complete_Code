@@ -6,6 +6,11 @@ package edu.simberbest.dcs.exception;
  */
 public class ApplicationException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ApplicationException() {
 		super();
 		// TODO Auto-generated constructor stub

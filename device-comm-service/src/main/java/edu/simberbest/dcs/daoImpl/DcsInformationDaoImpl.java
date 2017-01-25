@@ -5,14 +5,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import edu.simberbest.dcs.dao.DcsInformationDao;
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 import edu.simberbest.dcs.exception.DaoException;
 
 public class DcsInformationDaoImpl implements DcsInformationDao  {
 	private static final String FILENAME = "C:\\test\\filename.txt";
 	// Stub writing on file >>> will move to pie Data From Client
 	@Override
-	public boolean insertCurrentFeedToPie(InformationPacket infoPcket) throws DaoException {
+	public boolean insertCurrentFeedToTextFile(PlugLoadInformationPacket infoPcket) throws DaoException {
 		System.out.println("A packet is received for file");
 		BufferedWriter bw = null;
 		FileWriter fw = null;
@@ -33,6 +33,11 @@ public class DcsInformationDaoImpl implements DcsInformationDao  {
 				ex.printStackTrace();
 			}
 		}
+		return true;
+	}
+	@Override
+	public boolean insertCurrentFeedToPi(PlugLoadInformationPacket infoPcket) throws DaoException {
+		// TODO Auto-generated method stub
 		return false;
 	}
 }

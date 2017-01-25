@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.simberbest.dcs.constants.CommunicationServiceConstants;
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 
 /**
  * @author sbbpvi
@@ -22,9 +22,10 @@ public class InfoInsertionInPiProcess implements Runnable {
 		Logger.info("Enter InfoInsertionInPiProcess||Insert data In Pi");
 		try {
 			ExecutorService executorService = Executors.newFixedThreadPool(CommunicationServiceConstants.INFORMATION_SERVICE_THREAD_POOL_FOR_PI);
+		// Loop to check the Queue continuously 
 			while (true) {
 				if (InformationProcessingService.infoQueForPi.size() > 0) {
-					Iterator<InformationPacket> iter = InformationProcessingService.infoQueForPi.iterator();
+					Iterator<PlugLoadInformationPacket> iter = InformationProcessingService.infoQueForPi.iterator();
 					while (iter.hasNext()) {
 						executorService.execute(new InfoInsertionInPiService(iter.next()));
 						iter.remove();

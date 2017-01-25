@@ -2,7 +2,7 @@ package edu.simberbest.dcs.serviceImpl;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 
 /**
  * This class not been used, need to remove
@@ -13,14 +13,14 @@ import edu.simberbest.dcs.entity.InformationPacket;
 @Deprecated
 public class InformationCachingService implements Runnable {
 
-	private InformationPacket informationPckt;
-	public static volatile ConcurrentHashMap<InformationPacket, InformationPacket> inmformationMap = new ConcurrentHashMap<>();
+	private PlugLoadInformationPacket informationPckt;
+	public static volatile ConcurrentHashMap<PlugLoadInformationPacket, PlugLoadInformationPacket> inmformationMap = new ConcurrentHashMap<>();
 
 	public InformationCachingService() {
 		super();
 	}
 
-	public InformationCachingService(InformationPacket informationPckt) {
+	public InformationCachingService(PlugLoadInformationPacket informationPckt) {
 		super();
 		this.informationPckt = informationPckt;
 	}

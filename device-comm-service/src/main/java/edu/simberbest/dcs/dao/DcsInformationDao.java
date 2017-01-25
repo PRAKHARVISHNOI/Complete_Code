@@ -1,6 +1,6 @@
 package edu.simberbest.dcs.dao;
 
-import edu.simberbest.dcs.entity.InformationPacket;
+import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 import edu.simberbest.dcs.exception.DaoException;
 
 /**
@@ -13,5 +13,11 @@ public interface DcsInformationDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public boolean insertCurrentFeedToPie (InformationPacket infoPcket) throws DaoException;
+	public boolean insertCurrentFeedToTextFile (PlugLoadInformationPacket infoPcket) throws DaoException;
+	/**
+	 * @param infoPcket
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean insertCurrentFeedToPi (PlugLoadInformationPacket infoPcket) throws DaoException;
 }
