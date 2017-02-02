@@ -34,7 +34,7 @@ public class DcsController {
 	 * @param insPct
 	 * @return
 	 * 
-	 * Method To process Instruction, Send Message as status code depending on out put
+	 * Method To process Instruction, Send Message as status code depending on out put future
 	 */
 	@RequestMapping(value = "/processInstruction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Message> processInstruction(@RequestBody PlugLoadInstructionPacket instructionPacket) {

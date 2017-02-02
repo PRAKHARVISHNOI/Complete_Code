@@ -17,7 +17,7 @@ public class DeviceCommServiceApplication {
 
 	/**
 	 * @param args
-	 * method to initiate application
+	 * method to initiate application 
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceCommServiceApplication.class, args);

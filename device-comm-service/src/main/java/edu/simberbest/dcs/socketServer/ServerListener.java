@@ -36,7 +36,7 @@ public class ServerListener {
 		Runnable serverTask = () -> {
 			try {
 				ServerSocket serverSocket = new ServerSocket(CommunicationServiceConstants.SERVER_PORT);
-				System.out.println("Waiting for clients to connect...");
+			//	System.out.println("Waiting for clients to connect...");
 				while (true) {
 					Socket clientSocket = serverSocket.accept();
 
@@ -57,7 +57,7 @@ public class ServerListener {
 
 	void connectToClient(Socket clientSocket) {
 
-		System.out.println("Got a client !");
+	//	System.out.println("Got a client !");
 		try {
 			/* Get Data From Client */
 			int red = -1;
@@ -72,10 +72,10 @@ public class ServerListener {
 															// that client
 															// sends data
 															// UTF-8 encoded
-				System.out.println("message part recieved:" + redDataText);
+				//System.out.println("message part recieved:" + redDataText);
 				clientData.append(redDataText);
 			}
-			System.out.println("Data From Client :" + clientData.toString());
+			//System.out.println("Data From Client :" + clientData.toString());
 
 			String str = clientData.toString();
 			// Segregating data according to packet type
@@ -106,7 +106,7 @@ public class ServerListener {
 				}
 				if (infoPckt.getMacId() != null) {
 					informationQueue.add(infoPckt);
-					System.out.println(informationQueue);
+					//System.out.println(informationQueue);
 				}
 			} else {
 				String[] infoPckts = str.split("\\/");

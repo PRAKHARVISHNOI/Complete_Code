@@ -101,9 +101,15 @@ public class DcsInformationDaoImplForPi {
 			logger.error(e.toString());
 		}
 		try {
-			getConnectionAndFlushdata(urlEnergy, infoPcket.getEnergy());
-			getConnectionAndFlushdata(urlPower, infoPcket.getPower());
-			getConnectionAndFlushdata(urlRelay, infoPcket.getRelay());
+			if (infoPcket.getEnergy() != null) {
+				getConnectionAndFlushdata(urlEnergy, infoPcket.getEnergy());
+			}
+			if (infoPcket.getPower() != null) {
+				getConnectionAndFlushdata(urlPower, infoPcket.getPower());
+			}
+			if (infoPcket.getRelay() != null) {
+				getConnectionAndFlushdata(urlRelay, infoPcket.getRelay());
+			}
 		} catch (IOException e) {
 			logger.error(e.toString());
 		}
@@ -115,9 +121,9 @@ public class DcsInformationDaoImplForPi {
 		logger.info("Enter PlugLoadInformationPacket " );
 		URL urlEnergy = null, urlPower = null, urlRelay = null;
 		try {
-			urlEnergy = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+"111222"+CommunicationServiceConstants.ENERGY_TAG);
-			urlPower = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+"111222"+CommunicationServiceConstants.POWER_TAG);
-			urlRelay = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+"111222"+CommunicationServiceConstants.RELAY_TAG);
+			urlEnergy = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.ENERGY_TAG);
+			urlPower = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.POWER_TAG);
+			urlRelay = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.RELAY_TAG);
 		} catch (MalformedURLException e) {
 			logger.error("MalformedURLException in FormHTTPRequestGetElement()"+e.toString());
 		}
@@ -137,12 +143,12 @@ public class DcsInformationDaoImplForPi {
 	private String returnWebId(URL url) {
 		logger.info("Enter PlugLoadInformationPacket # param "+url );
 		try {
-			System.out.println(url);
+			//System.out.println(url);
 			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Authorization", "Basic " + base64encodedUserIDandPassword);
-			System.out.println("Trying to connect");
+		//	System.out.println("Trying to connect");
 			conn.connect();
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -151,11 +157,11 @@ public class DcsInformationDaoImplForPi {
 			String stringOutput = br.readLine();
 			conn.setConnectTimeout(10000);
 			conn.disconnect();
-			System.out.println(stringOutput);
+			//System.out.println(stringOutput);
 			try {
 				JSONObject obj = new JSONObject(stringOutput);
 
-				System.out.println(obj);
+				//System.out.println(obj);
 				return (new JSONObject(stringOutput)).get("WebId").toString();
 			} catch (JSONException e) {
 				logger.error("JSONException"+e.toString());
@@ -184,9 +190,9 @@ public class DcsInformationDaoImplForPi {
 		conn.connect();
 		if ((conn.getResponseCode() != 202) && (conn.getResponseCode() != 204)) {
 			conn.disconnect();
-			System.out.println("Error" + conn.getResponseCode());
+			//System.out.println("Error" + conn.getResponseCode());
 		} else {
-			System.out.println("Written Successfully");
+			//System.out.println("Written Successfully");
 		}
 		conn.disconnect();
 		logger.info("Exit getConnectionAndFlushdata" );

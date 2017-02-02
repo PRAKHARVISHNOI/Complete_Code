@@ -69,7 +69,8 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			ExecutorService executorService = Executors.newFixedThreadPool(CommunicationServiceConstants.INSTRUCTION_SERVICE_THREAD_POOL);
 			future = executorService.submit(new DcsClientTask(instructionPacket));
 		  //	instructionQueue.remove(instructionPacket);
-			flag = future.get(3000, TimeUnit.MILLISECONDS);
+			flag = future.get(20000, TimeUnit.MILLISECONDS);
+			//flag = future.get();
 		} catch (Exception e) {
 			Logger.error("Exception While Sending Instruction"+e);
 			throw new ApplicationException(CommunicationServiceConstants.CONNECTION_FAILURE,e);

@@ -13,7 +13,7 @@ public class DcsInformationDaoImpl implements DcsInformationDao  {
 	// Stub writing on file >>> will move to pie Data From Client
 	@Override
 	public boolean insertCurrentFeedToTextFile(PlugLoadInformationPacket infoPcket) throws DaoException {
-		System.out.println("A packet is received for file");
+		//System.out.println("A packet is received for file");
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 		try {

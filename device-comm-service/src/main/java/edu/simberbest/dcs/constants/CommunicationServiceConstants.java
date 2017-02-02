@@ -68,6 +68,10 @@ public class CommunicationServiceConstants {
 	public static  String  POWER_TAG=".POWER";
 	//RELAY
 	public static  String  RELAY_TAG=".RELAY";
+	//PLUGLOAD_ON
+	public static  String PLUGLOAD_ON;
+			//PLUGLOAD_OFF
+	public static  String		PLUGLOAD_OFF;
 	
 	public static void loadProperties(){
 		INFORMATION_SERVICE_THREAD_POOL_FOR_PI=Integer.parseInt(loadConfig.prop.getProperty("INFORMATION_SERVICE_THREAD_POOL_FOR_PI"));
@@ -81,5 +85,7 @@ public class CommunicationServiceConstants {
 		SERVER_PORT=Integer.parseInt(loadConfig.prop.getProperty("SERVER_PORT"));
 		PI_SERVER_IP=loadConfig.prop.getProperty ("PI_SERVER_IP");
 		PI_PASSWORD=loadConfig.prop.getProperty ("PI_PASSWORD");
+		PLUGLOAD_ON=loadConfig.prop.getProperty ("PLUGLOAD_ON");
+		PLUGLOAD_OFF=loadConfig.prop.getProperty ("PLUGLOAD_OFF");
 	}
 }
