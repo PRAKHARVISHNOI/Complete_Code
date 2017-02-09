@@ -18,6 +18,18 @@ public class CommunicationServiceConstants {
 	public static  String NO_INFORMATION_AVAILABLE;
 	// Successfully Information Retrieved 
 	public static  String INFORMATION_AVAILABLE;
+	//Information Available Details
+	public static  String INFORMATION_AVAILABLE_DETAILS="Informtion Retrived Successfully!";
+	//Information NOt found Details
+	public static  String NOT_FOUND_DETAILS="Connection Is Not Stabilize With RP! Mac could not be available!";
+	// Internal server error
+	public static  String INTERNAL_SERVER_ERROR_DETAILS="Internal Server Error Occured!";
+	// Internal server error
+	public static  String INTERNAL_SERVER_ERROR_DETAILS_FOR_ALL="Internal Server Error Occured As System Seems Down!";
+	//Execution Details
+	public static  String EXECUTION_DETAILS="Command Executed Successfully!";
+	//No information available details
+	public static  String NO_INFORMATION_AVAILABLE_DETAILS="No Information Available!";
 	//Error While Retrieving Information from Cache
 	public static  String ERROR_IN_RETRIVAL;
 	//Client Port
@@ -70,8 +82,11 @@ public class CommunicationServiceConstants {
 	public static  String  RELAY_TAG=".RELAY";
 	//PLUGLOAD_ON
 	public static  String PLUGLOAD_ON;
-			//PLUGLOAD_OFF
+	//PLUGLOAD_OFF
 	public static  String		PLUGLOAD_OFF;
+	//IP_NOT_PRESENT
+	public static  String IP_NOT_PRESENT;
+	// 
 	
 	public static void loadProperties(){
 		INFORMATION_SERVICE_THREAD_POOL_FOR_PI=Integer.parseInt(loadConfig.prop.getProperty("INFORMATION_SERVICE_THREAD_POOL_FOR_PI"));
@@ -87,5 +102,6 @@ public class CommunicationServiceConstants {
 		PI_PASSWORD=loadConfig.prop.getProperty ("PI_PASSWORD");
 		PLUGLOAD_ON=loadConfig.prop.getProperty ("PLUGLOAD_ON");
 		PLUGLOAD_OFF=loadConfig.prop.getProperty ("PLUGLOAD_OFF");
+		IP_NOT_PRESENT=loadConfig.prop.getProperty ("IP_NOT_PRESENT");
 	}
 }

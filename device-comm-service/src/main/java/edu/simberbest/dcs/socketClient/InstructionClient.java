@@ -115,7 +115,10 @@ public class InstructionClient {
 				Ip = informationPacket.getIpAddress();
 			}
 		}
-
+		if(Ip==null){
+			message=CommunicationServiceConstants.IP_NOT_PRESENT;
+			return message;
+		}
 		try {
 			Socket socket = openSocket(Ip, CommunicationServiceConstants.CLIENT_PORT);
 
