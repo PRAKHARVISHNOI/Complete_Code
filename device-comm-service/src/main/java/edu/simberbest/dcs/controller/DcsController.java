@@ -102,8 +102,8 @@ public class DcsController {
 		Logger.info("Enter DataController method getData: Param # " + macId);
 		TransactionPacket transactionPacket = new TransactionPacket();
 		try {
-			Collection<PlugLoadInformationPacket> informationPackets = dataService.getDetails(macId);
-			transactionPacket.setInfoList(informationPackets);
+			Collection<Object> informationPackets = dataService.getDetails(macId);
+			transactionPacket.setList(informationPackets);
 			if (informationPackets != null && !informationPackets.isEmpty()) {
 				transactionPacket.setMessage(new Response(CommunicationServiceConstants.INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
 			} else if (informationPackets == null || informationPackets.isEmpty()) {
@@ -113,10 +113,33 @@ public class DcsController {
 			return new ResponseEntity(transactionPacket, HttpStatus.OK);
 		} catch (ApplicationException e) {
 			transactionPacket.setMessage(new Response(e.getMessage(),CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS));
-			Logger.error("Exception Occured DataController method processInstruction: Error code " + e.getMessage());
+			Logger.error("Exception Occured DataController method getData: Error code " + e.getMessage());
 			return new ResponseEntity(transactionPacket, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
+	
+	@RequestMapping(value = "/getStatus/{macId:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TransactionPacket> getStatus(@PathVariable String macId) {
+		Logger.info("Enter DataController method getStatus: Param # " + macId);
+		TransactionPacket transactionPacket = new TransactionPacket();
+		try {
+			Collection<Object> informationPackets = dataService.getStatus(macId);
+			transactionPacket.setList(informationPackets);
+			if (informationPackets != null && !informationPackets.isEmpty()) {
+				transactionPacket.setMessage(new Response(CommunicationServiceConstants.INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
+			} else if (informationPackets == null || informationPackets.isEmpty()) {
+				transactionPacket.setMessage(new Response(CommunicationServiceConstants.NO_INFORMATION_AVAILABLE,CommunicationServiceConstants.NO_INFORMATION_AVAILABLE_DETAILS));
+			}
+			Logger.info("Exit DataController method getStatus");
+			return new ResponseEntity(transactionPacket, HttpStatus.OK);
+		} catch (ApplicationException e) {
+			transactionPacket.setMessage(new Response(e.getMessage(),CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS));
+			Logger.error("Exception Occured DataController method getStatus: Error code " + e.getMessage());
+			return new ResponseEntity(transactionPacket, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+	
 
 }

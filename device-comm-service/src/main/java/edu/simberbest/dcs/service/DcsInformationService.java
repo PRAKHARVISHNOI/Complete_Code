@@ -30,6 +30,11 @@ public interface DcsInformationService {
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public Collection<PlugLoadInformationPacket> getDetails(String mcId) throws ApplicationException; 
+	public Collection<Object> getDetails(String mcId) throws ApplicationException;
+	/**
+	 * @param macId
+	 * @return
+	 */
+	public Collection<Object> getStatus(String macId)throws ApplicationException; 
 	
 }

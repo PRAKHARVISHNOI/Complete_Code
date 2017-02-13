@@ -10,15 +10,19 @@ public class TransactionPacket implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Collection<PlugLoadInformationPacket> infoList;
+	private Collection<Object> list;
 	private Response message;
 
-	public Collection<PlugLoadInformationPacket> getInfoList() {
-		return infoList;
+	
+
+	
+
+	public Collection<Object> getList() {
+		return list;
 	}
 
-	public void setInfoList(Collection<PlugLoadInformationPacket> infoList) {
-		this.infoList = infoList;
+	public void setList(Collection<Object> list) {
+		this.list = list;
 	}
 
 	public Response getMessage() {
@@ -34,10 +38,12 @@ public class TransactionPacket implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public TransactionPacket(Collection<PlugLoadInformationPacket> infoList, Response message) {
+	public TransactionPacket(Collection<Object> infoList, Response message) {
 		super();
-		this.infoList = infoList;
+		this.list = infoList;
 		this.message = message;
 	}
+
+	
 
 }

@@ -84,10 +84,16 @@ public class CommunicationServiceConstants {
 	public static  String PLUGLOAD_ON;
 	//PLUGLOAD_OFF
 	public static  String		PLUGLOAD_OFF;
+	//PLUGLOAD_OFFLINE
+	public static  String		PLUGLOAD_OFFLINE;
 	//IP_NOT_PRESENT
 	public static  String IP_NOT_PRESENT;
-	// 
-	
+	//ON
+	public static  String ON="ON";
+	//OFF
+	public static  String OFF="OFF";
+	//OFFLINE
+	public static  String OFFLINE="OFFLINE";
 	public static void loadProperties(){
 		INFORMATION_SERVICE_THREAD_POOL_FOR_PI=Integer.parseInt(loadConfig.prop.getProperty("INFORMATION_SERVICE_THREAD_POOL_FOR_PI"));
 		INSTRUCTION_SERVICE_THREAD_POOL=Integer.parseInt(loadConfig.prop.getProperty("INSTRUCTION_SERVICE_THREAD_POOL"));
@@ -102,6 +108,7 @@ public class CommunicationServiceConstants {
 		PI_PASSWORD=loadConfig.prop.getProperty ("PI_PASSWORD");
 		PLUGLOAD_ON=loadConfig.prop.getProperty ("PLUGLOAD_ON");
 		PLUGLOAD_OFF=loadConfig.prop.getProperty ("PLUGLOAD_OFF");
+		PLUGLOAD_OFFLINE=loadConfig.prop.getProperty ("PLUGLOAD_OFFLINE");
 		IP_NOT_PRESENT=loadConfig.prop.getProperty ("IP_NOT_PRESENT");
 	}
 }

@@ -25,6 +25,10 @@ public class Response {
 		this.messageCode = messageCode;
 		this.messageDetails = messageDetails;
 	}
+	public Response() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	

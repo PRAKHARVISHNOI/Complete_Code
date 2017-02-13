@@ -145,11 +145,15 @@ public class InstructionClient {
 				relayStatus=elements[i + 1];
 			}
 		}
+		
+		if (relayStatus.trim().equals("0")) {
+			relayStatus=	CommunicationServiceConstants.PLUGLOAD_OFF;
+		}
 		if (relayStatus.trim().equals("1")) {
 			relayStatus=	CommunicationServiceConstants.PLUGLOAD_ON;
 		}
-		if (relayStatus.trim().equals("0")) {
-			relayStatus=	CommunicationServiceConstants.PLUGLOAD_OFF;
+		if (relayStatus.trim().equals("2")) {
+			relayStatus=	CommunicationServiceConstants.PLUGLOAD_OFFLINE;
 		}
 		return relayStatus;
 }

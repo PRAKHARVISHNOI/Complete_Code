@@ -1,5 +1,7 @@
 package edu.simberbest.dcs.entity;
 
+import java.io.Serializable;
+
 /**
  * @author sbbpvi
  *
@@ -7,8 +9,12 @@ package edu.simberbest.dcs.entity;
  */
 
 
-public class PlugLoadInformationPacket {
+public class PlugLoadInformationPacket implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String ipAddress;
 	private String macId;
 	private String timestamp;
