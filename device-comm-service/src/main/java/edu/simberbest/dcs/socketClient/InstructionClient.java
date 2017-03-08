@@ -11,9 +11,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +42,9 @@ public class InstructionClient {
 	public  String PLUGLOAD_OFFLINE;
 	@Value("${IP_NOT_PRESENT}")
 	public  String IP_NOT_PRESENT;
+	@Value("${CLIENT_CONNECTION_FAILURE_MESSAGE}")
+	public  String CLIENT_CONNECTION_FAILURE_MESSAGE;
+	
 /*	public String socketConnection1(PlugLoadInstructionPacket insPackt) {
 		Logger.info("Enter InstructionClient||Client connection");
 		String data = insPackt.toString();
@@ -133,15 +133,18 @@ public class InstructionClient {
 		}
 		try {
 			Socket socket = openSocket(Ip, CLIENT_PORT);
-
+			if(socket!=null){
 			String writeToAndReadFromSocket = writeToAndReadFromSocket(socket, data);
-
 			message=getRelayStatus(writeToAndReadFromSocket);
-			
 			socket.close();
+			}
+			else{
+				return message=CLIENT_CONNECTION_FAILURE_MESSAGE;
+			}
 		} catch (Exception e) {
 			Logger.error("Exception in sending Instruction packet", e);
 		}
+		Logger.info("Exit InstructionClient||Client connection"+message);
 		return message;
 	}
 
@@ -150,6 +153,7 @@ public class InstructionClient {
 	 *  Method to get relay status ALL
 	 */
 	private String getRelayStatus(String writeToAndReadFromSocket) {
+		Logger.info("Enter getRelayStatus");
 		String[] elements = writeToAndReadFromSocket.split("\\/");
 		String relayStatus = null;
 		for (int i = 0; i < elements.length; i++) {
@@ -167,10 +171,12 @@ public class InstructionClient {
 		if (relayStatus.trim().equals("2")) {
 			relayStatus=	PLUGLOAD_OFFLINE;
 		}
+		Logger.info("Exit getRelayStatus" +relayStatus);
 		return relayStatus;
 }
 
 	private String writeToAndReadFromSocket(Socket socket, String writeTo) throws Exception {
+		Logger.info("Enter writeToAndReadFromSocket");
 		try {
 			// write text to the socket
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -187,9 +193,10 @@ public class InstructionClient {
 
 			// close the reader, and return the results as a String
 			bufferedReader.close();
+			Logger.info("Exit writeToAndReadFromSocket");
 			return sb.toString();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.error("Exit writeToAndReadFromSocket"+e);
 			throw e;
 		}
 	}
@@ -200,6 +207,7 @@ public class InstructionClient {
 	 * version of this method could allow the user to specify this timeout.)
 	 */
 	private Socket openSocket(String server, int port) throws Exception {
+		Logger.info("Enter openSocket");
 		Socket socket = null;
 		// open a socket and connect with a timeout limit
 		try {
@@ -210,12 +218,13 @@ public class InstructionClient {
 			// this method will block for the defined number of milliseconds
 			int timeout = 20000;
 			socket.connect(sockaddr, timeout);
+			Logger.info("Exit openSocket");
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			Logger.error("Exit openSocket"+e);
 		} catch (SocketTimeoutException e) {
-			e.printStackTrace();
+			Logger.error("Exit openSocket"+e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.error("Exit openSocket"+e);
 		}
 		return socket;
 	}

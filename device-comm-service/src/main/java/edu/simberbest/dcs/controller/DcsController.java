@@ -38,6 +38,10 @@ public class DcsController {
 	@Value("${INFORMATION_AVAILABLE}")
 	public String INFORMATION_AVAILABLE;
 	
+	
+	@Value("${CONNECTION_FAILURE}")
+	public String CONNECTION_FAILURE;
+	
 	private static final Logger Logger = LoggerFactory.getLogger(DcsController.class);
 
 	/**
@@ -49,22 +53,24 @@ public class DcsController {
 	@RequestMapping(value = "/processInstruction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> processInstruction(@RequestBody PlugLoadInstructionPacket instructionPacket) {
 		Logger.info("Enter DataController method processInstruction: Param # " + instructionPacket);
+		String flag = null;
 		try {
 			// DcsInformationServiceImpl.instructionQueue.add(instructionPacket);
-			String flag;
+			
 			flag = dataService.processInstruction(instructionPacket);
 			Logger.info("Exit DataController method processInstruction");
 			if(flag.equals("DCS404")){
 				return new ResponseEntity(new Response(flag,CommunicationServiceConstants.NOT_FOUND_DETAILS), HttpStatus.NOT_FOUND);
 			}
+			if(flag.equals("DCS504")){
+				return new ResponseEntity(new Response(flag,CommunicationServiceConstants.NOT_FOUND_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 			return new ResponseEntity(new Response(flag,CommunicationServiceConstants.EXECUTION_DETAILS), HttpStatus.OK);
 		} catch (ApplicationException e) {
 			Logger.error("Exception Occured DataController method processInstruction: Error code " + e.getMessage());
-			if(e.getMessage().equals("DCS500")){
-				return new ResponseEntity(new Response(e.getMessage(),CommunicationServiceConstants.CONNECTION_TIMEOUT), HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			return new ResponseEntity(new Response(e.getMessage(),CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(new Response(CONNECTION_FAILURE,CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
 	}
 
 

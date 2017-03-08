@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import org.json.JSONException;
@@ -52,6 +53,9 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 	public String ERROR_IN_RETRIVAL;
 	@Value("${CONNECTION_TIMEOUT}")
 	public Integer CONNECTION_TIMEOUT;
+	@Value("${CONNECTION_TIMEOUT_MESSAGE}")
+	public String CONNECTION_TIMEOUT_MESSAGE;
+	
 	
 	public static volatile ConcurrentLinkedQueue<PlugLoadInstructionPacket> instructionQueue = new ConcurrentLinkedQueue<>();
 
@@ -102,8 +106,16 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			// instructionQueue.remove(instructionPacket);
 			flag = future.get(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
 			// flag = future.get();
-		} catch (Exception e) {
+			
+		} catch (TimeoutException e) {
+			Logger.error("TimeOut While Sending Instruction" + e);
+			Logger.info("Exit DcsInformationServiceImpl method processInstruction***********************"+System.currentTimeMillis());
+			throw new ApplicationException(CONNECTION_TIMEOUT_MESSAGE, e);
+		}
+		catch (Exception e) {
 			Logger.error("Exception While Sending Instruction" + e);
+			Logger.info("Exit DcsInformationServiceImpl method processInstruction***********************"+System.currentTimeMillis());
+			
 			throw new ApplicationException(CONNECTION_FAILURE, e);
 		}
 		Logger.info("Exit DcsInformationServiceImpl method processInstruction***********************"+System.currentTimeMillis());
