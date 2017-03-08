@@ -60,6 +60,9 @@ public class DcsController {
 			return new ResponseEntity(new Response(flag,CommunicationServiceConstants.EXECUTION_DETAILS), HttpStatus.OK);
 		} catch (ApplicationException e) {
 			Logger.error("Exception Occured DataController method processInstruction: Error code " + e.getMessage());
+			if(e.getMessage().equals("DCS500")){
+				return new ResponseEntity(new Response(e.getMessage(),CommunicationServiceConstants.CONNECTION_TIMEOUT), HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 			return new ResponseEntity(new Response(e.getMessage(),CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

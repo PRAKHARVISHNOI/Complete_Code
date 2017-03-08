@@ -50,6 +50,9 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 	public String CONNECTION_FAILURE;
 	@Value("${ERROR_IN_RETRIVAL}")
 	public String ERROR_IN_RETRIVAL;
+	@Value("${CONNECTION_TIMEOUT}")
+	public Integer CONNECTION_TIMEOUT;
+	
 	public static volatile ConcurrentLinkedQueue<PlugLoadInstructionPacket> instructionQueue = new ConcurrentLinkedQueue<>();
 
 	/**
@@ -80,7 +83,7 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 	 */
 	@Override
 	public String processInstruction(PlugLoadInstructionPacket instructionPacket) throws ApplicationException {
-		Logger.info("Enter DcsInformationServiceImpl method processInstruction: Param # " + instructionPacket);
+		Logger.info("Enter DcsInformationServiceImpl method processInstruction: Param ## " + instructionPacket+"***********************"+System.currentTimeMillis());
 		String flag = "";
 		try {
 			// Async Call for Instruction
@@ -97,13 +100,13 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			};
 			future = executorService.submit(task);
 			// instructionQueue.remove(instructionPacket);
-			flag = future.get(20000, TimeUnit.MILLISECONDS);
+			flag = future.get(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
 			// flag = future.get();
 		} catch (Exception e) {
 			Logger.error("Exception While Sending Instruction" + e);
 			throw new ApplicationException(CONNECTION_FAILURE, e);
 		}
-		Logger.info("Exit DcsInformationServiceImpl method processInstruction");
+		Logger.info("Exit DcsInformationServiceImpl method processInstruction***********************"+System.currentTimeMillis());
 		return flag;
 
 	}

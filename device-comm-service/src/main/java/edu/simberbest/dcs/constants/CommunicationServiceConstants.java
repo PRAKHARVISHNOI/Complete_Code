@@ -18,6 +18,10 @@ public class CommunicationServiceConstants {
 	//public static  String NO_INFORMATION_AVAILABLE;
 	// Successfully Information Retrieved 
 	//public static  String INFORMATION_AVAILABLE;
+	//TimeOut
+     public static  Integer TIMEOUT=10000;
+	//TimeOut Message
+	public static  String CONNECTION_TIMEOUT="Connection Time Out";
 	//Information Available Details
 	public static  String INFORMATION_AVAILABLE_DETAILS="Informtion Retrived Successfully!";
 	//Information NOt found Details
@@ -70,8 +74,6 @@ public class CommunicationServiceConstants {
 	public static  String  VALUE="/value";
 	//POST
 	public static  String  POST="POST";
-	//TimeOut
-	public static  Integer TIMEOUT=10000;
 	//FORMAT FOR TAG 
 	public static  String FORMAT_FOR_TAG="\\\\SBBPISVR1\\SG.CR11.PLUGLOAD.";
 	//ENERGY
