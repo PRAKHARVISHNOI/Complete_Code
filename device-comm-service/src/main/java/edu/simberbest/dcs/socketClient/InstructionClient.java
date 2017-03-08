@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import edu.simberbest.dcs.constants.CommunicationServiceConstants;
 import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
@@ -32,7 +33,18 @@ import edu.simberbest.dcs.serviceImpl.InformationProcessingService;
 public class InstructionClient {
 
 	private static final Logger Logger = LoggerFactory.getLogger(InstructionClient.class);
-
+	@Value("${CLIENT_PORT}")
+	public Integer CLIENT_PORT;
+	@Value("${PLUGLOAD_ON}")
+	public  String PLUGLOAD_ON;
+	// PLUGLOAD_OFF
+	@Value("${PLUGLOAD_OFF}")
+	public  String PLUGLOAD_OFF;
+	// PLUGLOAD_OFFLINE
+	@Value("${PLUGLOAD_OFFLINE}")
+	public  String PLUGLOAD_OFFLINE;
+	@Value("${IP_NOT_PRESENT}")
+	public  String IP_NOT_PRESENT;
 /*	public String socketConnection1(PlugLoadInstructionPacket insPackt) {
 		Logger.info("Enter InstructionClient||Client connection");
 		String data = insPackt.toString();
@@ -116,11 +128,11 @@ public class InstructionClient {
 			}
 		}
 		if(Ip==null){
-			message=CommunicationServiceConstants.IP_NOT_PRESENT;
+			message=IP_NOT_PRESENT;
 			return message;
 		}
 		try {
-			Socket socket = openSocket(Ip, CommunicationServiceConstants.CLIENT_PORT);
+			Socket socket = openSocket(Ip, CLIENT_PORT);
 
 			String writeToAndReadFromSocket = writeToAndReadFromSocket(socket, data);
 
@@ -147,13 +159,13 @@ public class InstructionClient {
 		}
 		
 		if (relayStatus.trim().equals("0")) {
-			relayStatus=	CommunicationServiceConstants.PLUGLOAD_OFF;
+			relayStatus=	PLUGLOAD_OFF;
 		}
 		if (relayStatus.trim().equals("1")) {
-			relayStatus=	CommunicationServiceConstants.PLUGLOAD_ON;
+			relayStatus=	PLUGLOAD_ON;
 		}
 		if (relayStatus.trim().equals("2")) {
-			relayStatus=	CommunicationServiceConstants.PLUGLOAD_OFFLINE;
+			relayStatus=	PLUGLOAD_OFFLINE;
 		}
 		return relayStatus;
 }

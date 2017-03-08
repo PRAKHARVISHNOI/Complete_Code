@@ -1,4 +1,4 @@
-package edu.simberbest.dcs.constants;
+/*package edu.simberbest.dcs.constants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,9 +22,9 @@ public class LoadConfig {
 			File temp;
 			try {
 				
-				/*
+				
 				 * load config file
-				 */
+				 
 				configFile = CommunicationServiceConstants.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();	
 				//System.out.println(configFile);
 				temp = new File(configFile);
@@ -59,3 +59,4 @@ public class LoadConfig {
 
 
 }
+*/

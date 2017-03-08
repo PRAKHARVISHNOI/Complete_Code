@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,13 @@ public class DcsController {
 
 	@Autowired
 	DcsInformationService dataService;
+	
+	@Value("${NO_INFORMATION_AVAILABLE}")
+	public String NO_INFORMATION_AVAILABLE;
+
+	@Value("${INFORMATION_AVAILABLE}")
+	public String INFORMATION_AVAILABLE;
+	
 	private static final Logger Logger = LoggerFactory.getLogger(DcsController.class);
 
 	/**
@@ -105,9 +113,9 @@ public class DcsController {
 			Collection<Object> informationPackets = dataService.getDetails(macId);
 			transactionPacket.setList(informationPackets);
 			if (informationPackets != null && !informationPackets.isEmpty()) {
-				transactionPacket.setMessage(new Response(CommunicationServiceConstants.INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
+				transactionPacket.setMessage(new Response(INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
 			} else if (informationPackets == null || informationPackets.isEmpty()) {
-				transactionPacket.setMessage(new Response(CommunicationServiceConstants.NO_INFORMATION_AVAILABLE,CommunicationServiceConstants.NO_INFORMATION_AVAILABLE_DETAILS));
+				transactionPacket.setMessage(new Response(NO_INFORMATION_AVAILABLE,CommunicationServiceConstants.NO_INFORMATION_AVAILABLE_DETAILS));
 			}
 			Logger.info("Exit DataController method getData");
 			return new ResponseEntity(transactionPacket, HttpStatus.OK);
@@ -127,9 +135,9 @@ public class DcsController {
 			Collection<Object> informationPackets = dataService.getStatus(macId);
 			transactionPacket.setList(informationPackets);
 			if (informationPackets != null && !informationPackets.isEmpty()) {
-				transactionPacket.setMessage(new Response(CommunicationServiceConstants.INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
+				transactionPacket.setMessage(new Response(INFORMATION_AVAILABLE,CommunicationServiceConstants.INFORMATION_AVAILABLE_DETAILS));
 			} else if (informationPackets == null || informationPackets.isEmpty()) {
-				transactionPacket.setMessage(new Response(CommunicationServiceConstants.NO_INFORMATION_AVAILABLE,CommunicationServiceConstants.NO_INFORMATION_AVAILABLE_DETAILS));
+				transactionPacket.setMessage(new Response(NO_INFORMATION_AVAILABLE,CommunicationServiceConstants.NO_INFORMATION_AVAILABLE_DETAILS));
 			}
 			Logger.info("Exit DataController method getStatus");
 			return new ResponseEntity(transactionPacket, HttpStatus.OK);

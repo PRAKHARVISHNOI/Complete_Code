@@ -26,23 +26,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import edu.simberbest.dcs.constants.CommunicationServiceConstants;
 import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 
 public class DcsInformationDaoImplForPi {
+	@Value("${PI_SERVER_IP}")
+	public String PI_SERVER_IP;
+	@Value("${PI_PASSWORD}")
+	public  String PI_PASSWORD;
 	private static final Logger logger = LoggerFactory.getLogger(DcsInformationDaoImplForPi.class);
-	private static final String BASE_PiS_URI_POST = "https://" + CommunicationServiceConstants.PI_SERVER_IP
+/*	private   String BASE_PiS_URI_POST = "https://" + PI_SERVER_IP
 			+ "/piwebapi/streams/";
-	private static final String BASE_PiS_URI_GET_ELEMENT = "https://" + CommunicationServiceConstants.PI_SERVER_IP
+	private   String BASE_PiS_URI_GET_ELEMENT = "https://" + PI_SERVER_IP
 			+ "/piwebapi/points?path=";
-	private static Calendar calendar;
+*/	private static Calendar calendar;
 	private static SimpleDateFormat simpleDateFormat;
 	private static String base64encodedUserIDandPassword;
 	private static String strTimestamp;
 
 	public boolean insertCurrentFeedToPi(PlugLoadInformationPacket infoPcket) {
-		logger.info("Enter DcsInformationDaoImplForPi method insertCurrentFeedToPi: Param # " + infoPcket);
+		String BASE_PiS_URI_POST,BASE_PiS_URI_GET_ELEMENT;
+		logger.info("Enter DcsInformationDaoImplForPi method insertCurrentFeedToPi: Param # " + infoPcket+":"+PI_SERVER_IP+":"+PI_PASSWORD);
+		BASE_PiS_URI_POST = "https://" + PI_SERVER_IP+ "/piwebapi/streams/";
+		 BASE_PiS_URI_GET_ELEMENT = "https://" + PI_SERVER_IP+ "/piwebapi/points?path=";
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 			@Override
 			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -81,7 +89,7 @@ public class DcsInformationDaoImplForPi {
 		String webElementIdEnergy = infoPcket.getEnergyWebId();
 		String webElementIdRelay = infoPcket.getRelayWebId();
 		
-		String UserIDandPassword = CommunicationServiceConstants.PI_PASSWORD;
+		String UserIDandPassword = PI_PASSWORD;
 		try {
 			base64encodedUserIDandPassword = Base64.getEncoder()
 					.encodeToString(UserIDandPassword.getBytes(CommunicationServiceConstants.UTF));
@@ -90,7 +98,7 @@ public class DcsInformationDaoImplForPi {
 		}
 		if (webElementIdPower == null || webElementIdPower.equals("") || webElementIdEnergy == null
 				|| webElementIdEnergy.equals("") || webElementIdRelay == null || webElementIdRelay.equals("")) {
-			updateWebId(infoPcket);
+			updateWebId(infoPcket,BASE_PiS_URI_POST,BASE_PiS_URI_GET_ELEMENT);
 		}
 		URL urlEnergy = null, urlPower = null, urlRelay = null;
 		try {
@@ -117,13 +125,13 @@ public class DcsInformationDaoImplForPi {
 		return true;
 	}
 
-	private void updateWebId(PlugLoadInformationPacket infoPcket) {
+	private void updateWebId(PlugLoadInformationPacket infoPcket, String bASE_PiS_URI_POST, String bASE_PiS_URI_GET_ELEMENT) {
 		logger.info("Enter PlugLoadInformationPacket " );
 		URL urlEnergy = null, urlPower = null, urlRelay = null;
 		try {
-			urlEnergy = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.ENERGY_TAG);
-			urlPower = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.POWER_TAG);
-			urlRelay = new URL(BASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.RELAY_TAG);
+			urlEnergy = new URL(bASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.ENERGY_TAG);
+			urlPower = new URL(bASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.POWER_TAG);
+			urlRelay = new URL(bASE_PiS_URI_GET_ELEMENT +CommunicationServiceConstants.FORMAT_FOR_TAG+infoPcket.getMacId()+CommunicationServiceConstants.RELAY_TAG);
 		} catch (MalformedURLException e) {
 			logger.error("MalformedURLException in FormHTTPRequestGetElement()"+e.toString());
 		}

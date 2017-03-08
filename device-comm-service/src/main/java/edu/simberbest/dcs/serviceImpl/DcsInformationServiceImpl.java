@@ -3,6 +3,7 @@ package edu.simberbest.dcs.serviceImpl;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import edu.simberbest.dcs.constants.CommunicationServiceConstants;
 import edu.simberbest.dcs.dao.DcsInformationDao;
@@ -25,6 +27,7 @@ import edu.simberbest.dcs.entity.PlugLoadInstructionPacket;
 import edu.simberbest.dcs.exception.ApplicationException;
 import edu.simberbest.dcs.exception.DaoException;
 import edu.simberbest.dcs.service.DcsInformationService;
+import edu.simberbest.dcs.socketClient.InstructionClient;
 
 /**
  * @author sbbpvi used for sending information to pi, sending instruction to
@@ -33,7 +36,20 @@ import edu.simberbest.dcs.service.DcsInformationService;
 public class DcsInformationServiceImpl implements DcsInformationService {
 	private static final Logger Logger = LoggerFactory.getLogger(DcsInformationServiceImpl.class);
 	@Autowired
+	InstructionClient instructionClient;
+	@Autowired
 	private DcsInformationDao dataServiceDao;
+	@Autowired
+	private DcsInformationDaoImplForPi dcsInformationDaoImplForPi;
+	@Autowired
+	DcsClientTask dcsClientTask;
+
+	@Value("${INSTRUCTION_SERVICE_THREAD_POOL}")
+	public Integer INSTRUCTION_SERVICE_THREAD_POOL;
+	@Value("${CONNECTION_FAILURE}")
+	public String CONNECTION_FAILURE;
+	@Value("${ERROR_IN_RETRIVAL}")
+	public String ERROR_IN_RETRIVAL;
 	public static volatile ConcurrentLinkedQueue<PlugLoadInstructionPacket> instructionQueue = new ConcurrentLinkedQueue<>();
 
 	/**
@@ -45,8 +61,8 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 	public boolean insertCurrentFeedToPie(PlugLoadInformationPacket infoPcket) throws ApplicationException {
 		Logger.info("Enter DcsInformationServiceImpl method insertCurrentFeedToPie: Param # " + infoPcket);
 		try {
-			new DcsInformationDaoImpl().insertCurrentFeedToTextFile(infoPcket);
-			new DcsInformationDaoImplForPi().insertCurrentFeedToPi(infoPcket);
+			dataServiceDao.insertCurrentFeedToTextFile(infoPcket);
+			dcsInformationDaoImplForPi.insertCurrentFeedToPi(infoPcket);
 		} catch (DaoException e) {
 			e.printStackTrace();
 			Logger.error("Exception While Data Entering In Pi" + e);
@@ -69,15 +85,23 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 		try {
 			// Async Call for Instruction
 			Future<String> future = null;
-			ExecutorService executorService = Executors
-					.newFixedThreadPool(CommunicationServiceConstants.INSTRUCTION_SERVICE_THREAD_POOL);
-			future = executorService.submit(new DcsClientTask(instructionPacket));
+			ExecutorService executorService = Executors.newFixedThreadPool(INSTRUCTION_SERVICE_THREAD_POOL);
+			Callable<String> task = () -> {
+				String message = "";
+				try {
+					message = instructionClient.socketConnection(instructionPacket);
+				} catch (Exception e) {
+					Logger.error("Exception in Insertion to Pi database", e);
+				}
+				return message;
+			};
+			future = executorService.submit(task);
 			// instructionQueue.remove(instructionPacket);
 			flag = future.get(20000, TimeUnit.MILLISECONDS);
 			// flag = future.get();
 		} catch (Exception e) {
 			Logger.error("Exception While Sending Instruction" + e);
-			throw new ApplicationException(CommunicationServiceConstants.CONNECTION_FAILURE, e);
+			throw new ApplicationException(CONNECTION_FAILURE, e);
 		}
 		Logger.info("Exit DcsInformationServiceImpl method processInstruction");
 		return flag;
@@ -106,7 +130,7 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			Logger.info("Exit DcsInformationServiceImpl method getDetails");
 		} catch (Exception e) {
 			Logger.error("Exception While Fetching Data From Cache" + e);
-			throw new ApplicationException(CommunicationServiceConstants.ERROR_IN_RETRIVAL, e);
+			throw new ApplicationException(ERROR_IN_RETRIVAL, e);
 		}
 		return infoList;
 	}
@@ -127,7 +151,8 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			// Sending Collection According to Mac As All or Mac ID
 			if (macId.equals(CommunicationServiceConstants.ALL)) {
 				for (PlugLoadInformationPacket informationPacket : InformationProcessingService.CACHE.keySet()) {
-					infoList.add(getStatusLabel(InformationProcessingService.CACHE.get(informationPacket).getRelay(), InformationProcessingService.CACHE.get(informationPacket).getMacId()));
+					infoList.add(getStatusLabel(InformationProcessingService.CACHE.get(informationPacket).getRelay(),
+							InformationProcessingService.CACHE.get(informationPacket).getMacId()));
 				}
 			} else {
 				infoListTemp = InformationProcessingService.CACHE.keySet().stream()
@@ -137,7 +162,7 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 			Logger.info("Exit DcsInformationServiceImpl method getStatus");
 		} catch (Exception e) {
 			Logger.error("Exception While Fetching Data From Cache" + e);
-			throw new ApplicationException(CommunicationServiceConstants.ERROR_IN_RETRIVAL, e);
+			throw new ApplicationException(ERROR_IN_RETRIVAL, e);
 		}
 		return infoList;
 	}
@@ -145,25 +170,24 @@ public class DcsInformationServiceImpl implements DcsInformationService {
 	/**
 	 * @param relay
 	 * @param macId
-	 * @return
-	 * method to create status locally
-	 * @throws JSONException 
+	 * @return method to create status locally
+	 * @throws JSONException
 	 * 
 	 */
 	private MacStatus getStatusLabel(String relay, String macId) throws JSONException {
-		MacStatus getStatus = new MacStatus() ;
+		MacStatus getStatus = new MacStatus();
 		if (relay.trim().equals("0")) {
 			getStatus.setMacID(macId);
-			getStatus.setStatus( CommunicationServiceConstants.OFF);
+			getStatus.setStatus(CommunicationServiceConstants.OFF);
 		}
 		if (relay.trim().equals("1")) {
 			getStatus.setMacID(macId);
-			getStatus.setStatus( CommunicationServiceConstants.ON);
-			}
+			getStatus.setStatus(CommunicationServiceConstants.ON);
+		}
 		if (relay.trim().equals("2")) {
 			getStatus.setMacID(macId);
-			getStatus.setStatus( CommunicationServiceConstants.OFFLINE);
-			}
+			getStatus.setStatus(CommunicationServiceConstants.OFFLINE);
+		}
 		return getStatus;
 	}
 }

@@ -27,7 +27,7 @@ public class InformationProcessingService implements Runnable {
 	@Override
 	public void run() {
 		Logger.info("Enter InformationProcessingService||Insertion data in queue");
-		CommunicationServiceConstants.loadProperties();
+		//CommunicationServiceConstants.loadProperties();
 		try {
 			while (true) {
 				if (!ServerListener.informationQueue.isEmpty()) {

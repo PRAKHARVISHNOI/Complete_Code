@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import edu.simberbest.dcs.constants.CommunicationServiceConstants;
 import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
@@ -27,15 +28,19 @@ import edu.simberbest.dcs.socketClient.InstructionClient;
 public class ServerListener {
 	private static final Logger Logger = LoggerFactory.getLogger(ServerListener.class);
 	public static volatile ConcurrentLinkedQueue<Object> informationQueue = new ConcurrentLinkedQueue<>();
-
+	@Value("${SOCKET_SERVER_POOL}")
+	public String SOCKET_SERVER_POOL;
+	@Value("${LCL_SER_PRT}")
+	public Integer SERVER_PORT;
 	public void startServer() {
 		//CommunicationServiceConstants.loadProperties();
 		Logger.info("Enter ServerListener||Running Socket Server");
-		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(CommunicationServiceConstants.SOCKET_SERVER_POOL);
+		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(Integer.parseInt(SOCKET_SERVER_POOL));
 
 		Runnable serverTask = () -> {
 			try {
-				ServerSocket serverSocket = new ServerSocket(CommunicationServiceConstants.SERVER_PORT);
+				System.out.println("Local server is running at port :"+SERVER_PORT);
+				ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
 			//	System.out.println("Waiting for clients to connect...");
 				while (true) {
 					Socket clientSocket = serverSocket.accept();
@@ -46,7 +51,7 @@ public class ServerListener {
 
 					clientProcessingPool.submit(gettingClient);
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				Logger.error("Unable to process client request",e);
 				e.printStackTrace();
 			}
