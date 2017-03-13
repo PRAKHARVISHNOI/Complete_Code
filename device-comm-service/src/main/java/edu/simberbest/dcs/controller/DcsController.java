@@ -63,12 +63,12 @@ public class DcsController {
 				return new ResponseEntity(new Response(flag,CommunicationServiceConstants.NOT_FOUND_DETAILS), HttpStatus.NOT_FOUND);
 			}
 			if(flag.equals("DCS504")){
-				return new ResponseEntity(new Response(flag,CommunicationServiceConstants.NOT_FOUND_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity(new Response(flag,CommunicationServiceConstants.LOCAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			return new ResponseEntity(new Response(flag,CommunicationServiceConstants.EXECUTION_DETAILS), HttpStatus.OK);
 		} catch (ApplicationException e) {
 			Logger.error("Exception Occured DataController method processInstruction: Error code " + e.getMessage());
-			return new ResponseEntity(new Response(CONNECTION_FAILURE,CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(new Response(e.getMessage(),CommunicationServiceConstants.INTERNAL_SERVER_ERROR_DETAILS), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}

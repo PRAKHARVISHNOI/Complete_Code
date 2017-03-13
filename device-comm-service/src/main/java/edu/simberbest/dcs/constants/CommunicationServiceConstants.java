@@ -18,6 +18,8 @@ public class CommunicationServiceConstants {
 	//public static  String NO_INFORMATION_AVAILABLE;
 	// Successfully Information Retrieved 
 	//public static  String INFORMATION_AVAILABLE;
+	//Mac
+	public static  String Mac="Mac";
 	//TimeOut
      public static  Integer TIMEOUT=10000;
 	//TimeOut Message
@@ -26,6 +28,8 @@ public class CommunicationServiceConstants {
 	public static  String INFORMATION_AVAILABLE_DETAILS="Informtion Retrived Successfully!";
 	//Information NOt found Details
 	public static  String NOT_FOUND_DETAILS="Connection Is Not Stabilize With RP! Mac could not be available!";
+	//Local Server not connecting with RP
+	public static  String LOCAL_SERVER_ERROR="Local Server is not able to communicate to RP!";
 	// Internal server error
 	public static  String INTERNAL_SERVER_ERROR_DETAILS="Internal Server Error Occured!";
 	// Internal server error
