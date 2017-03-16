@@ -52,6 +52,8 @@ public class InstructionClient {
 	private DcsInformationDaoImplForPi dcsInformationDaoImplForPi;
 	@Autowired
 	private DcsInformationDao dataServiceDao;
+	@Autowired
+	private	InformationProcessingService informationProcessingService;
 
 	/*
 	 * public String socketConnection1(PlugLoadInstructionPacket insPackt) {
@@ -157,6 +159,9 @@ public class InstructionClient {
 			if (elements[i].equals(CommunicationServiceConstants.Mac)) {
 				informationPacket.setMacId(elements[i + 1]);
 			}
+			if (elements[i].equals(CommunicationServiceConstants.TIMESTAMP)) {
+				informationPacket.setRlyTimeStamp(elements[i + 1]);
+			}
 			if (elements[i].equals(CommunicationServiceConstants.RELAY)) {
 				informationPacket.setRelay(elements[i + 1]);
 				relayStatus = elements[i + 1];
@@ -164,6 +169,12 @@ public class InstructionClient {
 		}
 		dataServiceDao.insertCurrentFeedToTextFile(informationPacket);
 		dcsInformationDaoImplForPi.insertCurrentFeedToPi(informationPacket);
+		PlugLoadInformationPacket plugLoadInformationPacket=  InformationProcessingService.CACHE.get(informationPacket);
+		if(plugLoadInformationPacket!=null){
+			plugLoadInformationPacket.setRelay(relayStatus.trim());
+			plugLoadInformationPacket.setRlyTimeStamp(informationPacket.getRlyTimeStamp().trim());
+			InformationProcessingService.CACHE.put(plugLoadInformationPacket, plugLoadInformationPacket);
+		}
 		if (relayStatus.trim().equals("0")) {
 			relayStatus = PLUGLOAD_OFF;
 		}
@@ -173,7 +184,8 @@ public class InstructionClient {
 		if (relayStatus.trim().equals("2")) {
 			relayStatus = PLUGLOAD_OFFLINE;
 		}
-		Logger.info("Exit getRelayStatus + Saving Response 'File and Pie'" + relayStatus);
+		
+		Logger.info("Exit getRelayStatus + Saving Response 'File and Pie'" + relayStatus );
 		return relayStatus;
 	}
 
