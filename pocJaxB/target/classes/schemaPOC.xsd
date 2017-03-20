@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc">
+	<!-- <xs:element name="Employee"> <xs:complexType mixed="true"> <xs:choice 
+		minOccurs="0" maxOccurs="1"> <xs:element name="id" minOccurs="0" maxOccurs="1"> 
+		<xs:simpleType> <xs:restriction base="xs:integer"> <xs:minInclusive value="0" 
+		/> <xs:maxInclusive value="120" /> </xs:restriction> </xs:simpleType> </xs:element> 
+		<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"> </xs:element> 
+		</xs:choice> </xs:complexType> </xs:element> -->
+
+	<xs:element name="employee">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="id" type="EmpID" minOccurs="0"
+					maxOccurs="1" />
+				<xs:element name="name" type="EmpName" minOccurs="0"
+					maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:simpleType name="EmpID">
+		<xs:annotation>
+			<xs:documentation>DeviceID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EmpName">
+		<xs:annotation>
+			<xs:documentation>Module logging the error</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:whiteSpace value="collapse" />
+			<xs:maxLength value="30" />
+			<xs:minLength value="2" />
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

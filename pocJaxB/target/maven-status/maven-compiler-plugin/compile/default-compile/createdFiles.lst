@@ -1,0 +1,7 @@
+com\sinberbest\api\beans\employee\Employee.class
+com\sinberbest\entity\Employee1.class
+com\sinberbest\poc\ServiceApplication.class
+com\sinberbest\pocJaxB\pocJaxB\App.class
+com\sinberbest\poc\POCController.class
+com\sinberbest\poc\WebConfig.class
+com\sinberbest\api\beans\employee\ObjectFactory.class

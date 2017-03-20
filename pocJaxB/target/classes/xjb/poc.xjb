@@ -1,0 +1,29 @@
+<jxb:bindings
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:annox="http://annox.dev.java.net"
+    xmlns:orm="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xs:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+    version="2.1">
+	
+    <jxb:bindings schemaLocation="../xsd/schemaPOC.xsd">
+    
+        <jxb:bindings node="//xs:element[@name='Employee']//xs:complexType">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="employee" />
+            </annox:annotate>
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+                                
+        </jxb:bindings>
+     
+            
+        <jxb:schemaBindings>
+            <jxb:package name="com.sinberbest.api.beans.employee"/>
+        </jxb:schemaBindings> 
+    </jxb:bindings>
+    
+    
+	
+</jxb:bindings>
