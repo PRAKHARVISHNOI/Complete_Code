@@ -13,6 +13,7 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import javax.net.ssl.HostnameVerifier;
@@ -45,6 +46,7 @@ public class DcsInformationDaoImplForPi {
 	private static SimpleDateFormat simpleDateFormat;
 	private static String base64encodedUserIDandPassword;
 	private static String strTimestamp;
+	
 
 	public boolean insertCurrentFeedToPi(PlugLoadInformationPacket infoPcket) {
 		String BASE_PiS_URI_POST,BASE_PiS_URI_GET_ELEMENT;
@@ -84,10 +86,13 @@ public class DcsInformationDaoImplForPi {
 		calendar = Calendar.getInstance(timeZone);
 		simpleDateFormat = new SimpleDateFormat(CommunicationServiceConstants.DATE_FORMAT);
 		simpleDateFormat.setTimeZone(timeZone);
-		strTimestamp = simpleDateFormat.format(calendar.getTime());
+		strTimestamp = simpleDateFormat.format(new Date(Long.parseLong(infoPcket.getTimestamp())));
 		String webElementIdPower = infoPcket.getPowerWebId();
 		String webElementIdEnergy = infoPcket.getEnergyWebId();
 		String webElementIdRelay = infoPcket.getRelayWebId();
+		String strEngTimestamp;
+		String strPwTimestamp;
+		String strRlyTimestamp;
 		
 		String UserIDandPassword = PI_PASSWORD;
 		try {
@@ -110,13 +115,16 @@ public class DcsInformationDaoImplForPi {
 		}
 		try {
 			if (infoPcket.getEnergy() != null) {
-				getConnectionAndFlushdata(urlEnergy, infoPcket.getEnergy());
+				strEngTimestamp = simpleDateFormat.format(new Date(Long.parseLong(infoPcket.getEnTimeStamp())));
+				getConnectionAndFlushdata(urlEnergy, infoPcket.getEnergy(),strEngTimestamp);
 			}
 			if (infoPcket.getPower() != null) {
-				getConnectionAndFlushdata(urlPower, infoPcket.getPower());
+				strPwTimestamp = simpleDateFormat.format(new Date(Long.parseLong(infoPcket.getPwTimeStamp())));
+				getConnectionAndFlushdata(urlPower, infoPcket.getPower(),strPwTimestamp);
 			}
 			if (infoPcket.getRelay() != null) {
-				getConnectionAndFlushdata(urlRelay, infoPcket.getRelay());
+				strRlyTimestamp = simpleDateFormat.format(new Date(Long.parseLong(infoPcket.getRlyTimeStamp())));
+				getConnectionAndFlushdata(urlRelay, infoPcket.getRelay(),strRlyTimestamp);
 			}
 		} catch (IOException e) {
 			logger.error(e.toString());
@@ -182,7 +190,7 @@ public class DcsInformationDaoImplForPi {
 		
 	}
 
-	private void getConnectionAndFlushdata(URL url, String value) throws IOException {
+	private void getConnectionAndFlushdata(URL url, String value, String strTimestamp) throws IOException {
 		logger.info("Enter getConnectionAndFlushdata ## param "+url+"--"+value );
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 		conn.setRequestMethod(CommunicationServiceConstants.POST);

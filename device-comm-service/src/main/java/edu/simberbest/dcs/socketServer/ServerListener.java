@@ -83,8 +83,6 @@ public class ServerListener {
 			//System.out.println("Data From Client :" + clientData.toString());
 
 			String str = clientData.toString();
-			// Segregating data according to packet type
-
 			if (str.contains(CommunicationServiceConstants.TIMESTAMP)) {
 				String[] infoPckts = str.split("\\/");
 				PlugLoadInformationPacket infoPckt = new PlugLoadInformationPacket();
@@ -139,6 +137,7 @@ public class ServerListener {
 			}
 
 			clientSocket.close();
+			Logger.info("Exit : connectToClient");
 		} catch (IOException e) {
 			Logger.error("Exception in listining client", e);
 		}

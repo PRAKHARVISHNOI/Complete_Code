@@ -42,7 +42,6 @@ public class InformationProcessingService implements Runnable {
 					if (obj != null) {
 						if (obj instanceof PlugLoadInformationPacket) {
 							PlugLoadInformationPacket localInfoPacket = (PlugLoadInformationPacket) obj;
-							infoQueForPi.add(localInfoPacket);
 							PlugLoadInformationPacket informationPacket = CACHE.get(localInfoPacket);
 							if (informationPacket != null) {
 								if (localInfoPacket.getEnergy() != null) {
@@ -58,11 +57,13 @@ public class InformationProcessingService implements Runnable {
 									informationPacket.setRlyTimeStamp(localInfoPacket.getTimestamp());
 								}
 								CACHE.put(localInfoPacket, informationPacket);
+								infoQueForPi.add(informationPacket);
 							} else {
 								localInfoPacket.setEnTimeStamp(localInfoPacket.getTimestamp());
 								localInfoPacket.setPwTimeStamp(localInfoPacket.getTimestamp());
 								localInfoPacket.setRlyTimeStamp(localInfoPacket.getTimestamp());
 								CACHE.put(localInfoPacket, localInfoPacket);
+								infoQueForPi.add(localInfoPacket);
 							}
 							// iter.remove();
 						}
