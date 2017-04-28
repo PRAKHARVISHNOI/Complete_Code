@@ -12,13 +12,16 @@ edu\simberbest\dcs\entity\MacStatus.class
 edu\simberbest\dcs\entity\IpVsMac.class
 edu\simberbest\dcs\socketClient\InstructionClient.class
 edu\simberbest\dcs\entity\PlugLoadInformationPacket.class
+edu\simberbest\dcs\serviceImpl\DcsMultipleInstructionService.class
 edu\simberbest\dcs\configration\AppConfig.class
 edu\simberbest\dcs\serviceImpl\DcsInformationServiceImpl.class
 edu\simberbest\dcs\serviceImpl\InfoInsertionInPiService.class
 edu\simberbest\dcs\entity\Response.class
 edu\simberbest\dcs\serviceImpl\InformationCachingService.class
 edu\simberbest\dcs\daoImpl\DcsInformationDaoImplForPi$1.class
+com\simberbest\dcs\Util\Util.class
 edu\simberbest\dcs\entity\Queue.class
+edu\simberbest\dcs\entity\ResponseMessage.class
 edu\simberbest\dcs\entity\PlugLoadInstructionPacket.class
 edu\simberbest\dcs\entity\TransactionPacket.class
 edu\simberbest\dcs\serviceImpl\InformationProcessingService.class

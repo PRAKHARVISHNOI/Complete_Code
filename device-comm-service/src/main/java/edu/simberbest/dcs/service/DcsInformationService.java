@@ -2,9 +2,12 @@ package edu.simberbest.dcs.service;
 
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import edu.simberbest.dcs.entity.PlugLoadInformationPacket;
 import edu.simberbest.dcs.entity.PlugLoadInstructionPacket;
+import edu.simberbest.dcs.entity.Response;
 import edu.simberbest.dcs.exception.ApplicationException;
 
 /**
@@ -18,7 +21,7 @@ public interface DcsInformationService {
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public String processInstruction(PlugLoadInstructionPacket insPct) throws ApplicationException ;
+	public Response processInstruction(PlugLoadInstructionPacket insPct) throws ApplicationException ;
 	/**
 	 * @param infoPcket
 	 * @return
@@ -35,6 +38,23 @@ public interface DcsInformationService {
 	 * @param macId
 	 * @return
 	 */
-	public Collection<Object> getStatus(String macId)throws ApplicationException; 
+	public Collection<Object> getStatus(String macId)throws ApplicationException;
+	/**
+	 * @param instructionPackets
+	 * @return 
+	 * @throws ApplicationException 
+	 */
+	public List<Response> processMultipleInstruction(List<PlugLoadInstructionPacket> instructionPackets) throws ApplicationException;
+	
+	/**
+	 * @return 
+	 * @throws ApplicationException
+	 */
+	public List<Response> switchOnAllLoads() throws ApplicationException;
+	/**
+	 * @return
+	 * @throws ApplicationException 
+	 */
+	public Map<String, List<String>> summaryOfAllPlugLoads() throws ApplicationException;
 	
 }

@@ -175,7 +175,7 @@ public class InstructionClient {
 			plugLoadInformationPacket.setRlyTimeStamp(informationPacket.getRlyTimeStamp().trim());
 			InformationProcessingService.CACHE.put(plugLoadInformationPacket, plugLoadInformationPacket);
 		}
-		if (relayStatus.trim().equals("0")) {
+		/*if (relayStatus.trim().equals("0")) {
 			relayStatus = PLUGLOAD_OFF;
 		}
 		if (relayStatus.trim().equals("1")) {
@@ -183,7 +183,7 @@ public class InstructionClient {
 		}
 		if (relayStatus.trim().equals("2")) {
 			relayStatus = PLUGLOAD_OFFLINE;
-		}
+		}*/
 		
 		Logger.info("Exit getRelayStatus + Saving Response 'File and Pie'" + relayStatus );
 		return relayStatus;

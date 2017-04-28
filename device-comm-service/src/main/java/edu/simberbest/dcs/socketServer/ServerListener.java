@@ -63,6 +63,7 @@ public class ServerListener {
 	void connectToClient(Socket clientSocket) {
 
 	//	System.out.println("Got a client !");
+		Logger.info("Enter connectToClient#"+clientSocket);
 		try {
 			/* Get Data From Client */
 			int red = -1;

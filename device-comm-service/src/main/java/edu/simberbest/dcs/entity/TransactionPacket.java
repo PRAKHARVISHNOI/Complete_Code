@@ -11,11 +11,7 @@ public class TransactionPacket implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Collection<Object> list;
-	private Response message;
-
-	
-
-	
+	private ResponseMessage message;
 
 	public Collection<Object> getList() {
 		return list;
@@ -25,24 +21,26 @@ public class TransactionPacket implements Serializable {
 		this.list = list;
 	}
 
-	public Response getMessage() {
-		return message;
-	}
-
-	public void setMessage(Response message) {
-		this.message = message;
-	}
 
 	public TransactionPacket() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TransactionPacket(Collection<Object> infoList, Response message) {
-		super();
-		this.list = infoList;
+	public ResponseMessage getMessage() {
+		return message;
+	}
+
+	public void setMessage(ResponseMessage message) {
 		this.message = message;
 	}
+
+	public TransactionPacket(Collection<Object> list, ResponseMessage message) {
+		super();
+		this.list = list;
+		this.message = message;
+	}
+
 
 	
 
