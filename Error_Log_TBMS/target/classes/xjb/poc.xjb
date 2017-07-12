@@ -1,0 +1,60 @@
+<jxb:bindings
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:annox="http://annox.dev.java.net"
+    xmlns:orm="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xs:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+    version="2.1">
+	
+    <jxb:bindings schemaLocation="../xsd/SchemaErrorlog.xsd">
+    
+        <jxb:bindings node="//xs:element[@name='ErrorLog']//xs:complexType">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="ErrorLog" />
+            </annox:annotate>
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+             <!-- error -->                   
+        </jxb:bindings>
+       
+        <jxb:bindings node="//xs:element[@name='ErrorLogGetResp']//xs:complexType">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="ErrorLogGetResp" />
+            </annox:annotate>
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+        </jxb:bindings>
+         
+         <jxb:bindings node="//xs:element[@name='ErrorLogResp']//xs:complexType">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="ErrorLogResp" />
+            </annox:annotate>
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+        </jxb:bindings>
+           <jxb:schemaBindings>
+            <jxb:package name="com.sinberbest.api.beans.ErrorLog"/>
+        </jxb:schemaBindings> 
+        
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="../xsd/SchemaBase.xsd">
+               
+        <jxb:schemaBindings>
+            <jxb:package name="com.sinberbest.api.beans.common"/>
+        </jxb:schemaBindings> 
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="../xsd/SchemaDataTypes.xsd">
+    
+    	<jxb:bindings node="//xs:element[@name='GenericAPIErrorResponse']//xs:complexType">
+            <annox:annotate>
+                <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="GenericAPIErrorResponse" />
+            </annox:annotate>
+            <inheritance:implements>java.io.Serializable</inheritance:implements>
+        </jxb:bindings>
+               
+        <jxb:schemaBindings>
+            <jxb:package name="com.sinberbest.api.beans.types"/>
+        </jxb:schemaBindings> 
+    </jxb:bindings>
+	
+</jxb:bindings>

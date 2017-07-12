@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace = "http://www.sinberbest.sg/common"
+ xmlns = "http://www.sinberbest.sg/common"
+  xmlns:xs = "http://www.w3.org/2001/XMLSchema" 
+           attributeFormDefault = "qualified" elementFormDefault = "qualified">
+	
+    <!-- Common Simple Types -->
+       
+     <xs:simpleType name="ErrorID">
+        <xs:annotation>
+            <xs:documentation>ErrorID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">                    
+            
+        </xs:restriction>                  
+    </xs:simpleType>
+    
+    <xs:simpleType name="ErrorTime">
+        <xs:annotation>
+            <xs:documentation>ErrorID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">                    
+            
+        </xs:restriction>                  
+    </xs:simpleType>
+    
+    
+    
+    <xs:simpleType name="DeviceID">
+        <xs:annotation>
+            <xs:documentation>DeviceID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+        </xs:restriction>                  
+    </xs:simpleType>
+    
+    <xs:simpleType name="ErrorTrace" >
+        <xs:annotation>
+            <xs:documentation>ErrorTrace</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:whiteSpace value="collapse"/>
+            <xs:maxLength value="256"/>
+            <xs:minLength value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Source" >
+        <xs:annotation>
+            <xs:documentation>Module logging the error</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:whiteSpace value="collapse"/>
+            <xs:maxLength value="30"/>
+            <xs:minLength value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="Details" >
+        <xs:annotation>
+            <xs:documentation>Detailed Error</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:whiteSpace value="collapse"/>
+            <xs:maxLength value="200"/>
+            <xs:minLength value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+	 
+    <xs:simpleType name="RequestID" >
+        <xs:annotation>
+            <xs:documentation>RequestID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">                    
+            <xs:maxLength value="256"/>
+        </xs:restriction>                  
+    </xs:simpleType>
+	
+    <xs:simpleType name="ResponseErrorCode" >
+        <xs:annotation>
+            <xs:documentation>Error Code</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">                    
+        </xs:restriction>                  
+    </xs:simpleType>
+    
+          
+    <xs:simpleType name="MessageEn" >
+        <xs:annotation>
+            <xs:documentation>Message English</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">                    
+        </xs:restriction>                  
+    </xs:simpleType>
+	
+	
+    <!-- common enum types-->
+   <xs:simpleType name="Severity" >
+        <xs:annotation>
+            <xs:documentation>Severity</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="LOW"/>
+            <xs:enumeration value="MEDIUM"/>
+            <xs:enumeration value="HIGH"/>
+            <xs:enumeration value="CRITICAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="ErrorCode">
+        <xs:annotation>
+            <xs:documentation>Error Code</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="E-11"/>
+            <xs:enumeration value="E-12"/>
+            <xs:enumeration value="E-13"/>
+            <xs:enumeration value="E-14"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    
+    <!-- Complex Types -->    
+    <xs:complexType name="ErrorLog">
+        <xs:annotation>
+            <xs:documentation>ErrorLog</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+        	<xs:element name="errorID" type="ErrorID" minOccurs="0" maxOccurs="1" />
+        	<xs:element name="errorTime" type="ErrorTime" minOccurs="0" maxOccurs="1" />
+        	<xs:element name="errorCode" type="ErrorCode" minOccurs="1" maxOccurs="1" />
+           	<xs:element name="deviceID" type="DeviceID" minOccurs="0" maxOccurs="1" />
+           	<xs:element name="errorTrace" type="ErrorTrace" minOccurs="0" maxOccurs="1" />
+           	<xs:element name="source" type="Source" minOccurs="1" maxOccurs="1" />
+           	<xs:element name="severity" type="Severity" minOccurs="1" maxOccurs="1" />
+           	<xs:element name="details" type="Details" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+        
+</xs:schema>

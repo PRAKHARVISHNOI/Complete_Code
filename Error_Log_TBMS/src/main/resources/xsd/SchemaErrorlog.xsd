@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	       xmlns:common="http://www.sinberbest.sg/common"
+	       xmlns:types="http://www.sinberbest.sg/types"
+	       xmlns="http://www.sinberbest.sg/ErrorLog" 
+	       targetNamespace="http://www.sinberbest.sg/ErrorLog"
+	elementFormDefault="qualified" attributeFormDefault="qualified">
+
+	<xs:import namespace="http://www.sinberbest.sg/common" schemaLocation="SchemaBase.xsd" />
+	<xs:import namespace="http://www.sinberbest.sg/types" schemaLocation="SchemaDataTypes.xsd" />
+	
+	<!-- Add ErrorLog -->
+	<xs:element name="ErrorLog">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ErrorLogRequest">
+					<xs:sequence>
+						<xs:element name="deviceID" type="common:DeviceID" minOccurs="0" maxOccurs="1" />
+						<xs:element name="errorTrace" type="common:ErrorTrace" minOccurs="0" maxOccurs="1" />
+						<xs:element name="source" type="common:Source" minOccurs="1" maxOccurs="1" />
+						<xs:element name="severity" type="common:Severity" minOccurs="1" maxOccurs="1" />
+						<xs:element name="errorCode" type="common:ErrorCode" minOccurs="1" maxOccurs="1" />	
+						<xs:element name="details" type="common:Details" minOccurs="0" maxOccurs="1" />					
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- Get Error Logs -->
+
+	<xs:element name="ErrorLogResp">
+	<xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="types:ErrorLogResponse">
+				<xs:sequence>
+					<xs:element name="errorID" type="common:ErrorID"
+						nillable="false" minOccurs="1" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ErrorLogGetResp">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="types:ErrorLogResponse">
+					<xs:sequence>
+						<xs:element name="error" type="common:ErrorLog"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	
+
+
+
+</xs:schema>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+ http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- Scans for application @Components to deploy -->
+	<context:component-scan base-package="com.*.*">
+		<context:include-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+		<context:include-filter
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"
+			type="annotation" />
+		<context:exclude-filter
+			expression="org.springframework.context.annotation.Configuration"
+			type="annotation" />
+	</context:component-scan>
+	
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean id="marshallingHttpMessageConverter"
+				class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+				<property name="unmarshaller" ref="jaxb2Marshaller"></property>
+				<property name="marshaller" ref="jaxb2Marshaller"></property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="classesToBeBound">
+			<list>
+				   <value>com.sinberbest.api.entity.common.ErrorLog</value>
+					<value>com.sinberbest.api.entity.ErrorLog.ErrorLog</value>
+					<value>com.sinberbest.api.entity.ErrorLog.ErrorLogGetResp</value>
+					<value>com.sinberbest.api.entity.ErrorLog.ErrorLogResp</value>
+					<value>com.sinberbest.api.entity.types.ErrorLogRequest</value>
+					<value>com.sinberbest.api.entity.types.ErrorLogResponse</value>
+					<value>com.sinberbest.api.entity.types.GenericAPIErrorResponse</value>
+			</list>
+		</property>
+		<property name="schemas">
+			<list>
+				<value>classpath:xsd/*.xsd</value>
+			</list>
+		</property>
+	</bean>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+</beans>

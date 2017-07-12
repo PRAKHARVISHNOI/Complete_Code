@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:common="http://www.sinberbest.sg/common" xmlns="http://www.sinberbest.sg/types"
+	targetNamespace="http://www.sinberbest.sg/types" attributeFormDefault="qualified"
+	elementFormDefault="qualified">
+
+	<xs:import namespace="http://www.sinberbest.sg/common"
+		schemaLocation="SchemaBase.xsd" />
+
+	<xs:complexType name="ErrorLogRequest" abstract="true" />
+
+	<xs:complexType name="ErrorLogResponse" abstract="true">
+		<xs:sequence>
+			<xs:group ref="BaseResponse" />
+			<xs:group ref="BaseErrorResponse" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="GenericAPIErrorResponse">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ErrorLogResponse" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="BaseResponse">
+		<xs:sequence>
+			<xs:element name="requestID" type="common:RequestID"
+				minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:group name="BaseErrorResponse">
+		<xs:sequence>
+			<xs:element name="errorCode" type="common:ResponseErrorCode"
+				nillable="false" minOccurs="0" maxOccurs="1" />
+			<xs:element name="messageEn" type="common:MessageEn"
+				nillable="false" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:group>
+
+
+</xs:schema>
